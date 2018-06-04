@@ -56,8 +56,6 @@ app.get('/view', function(req, res) {
     
 	getValues(data,res);	});
 
-
-
 function appendValues(data,values) {
  
     var auth = authorize(data);
