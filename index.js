@@ -27,7 +27,6 @@ app.get("/", function(request, response){
      fs.readFile(TOKEN_PATH, function(err) {
     
     if (err) {
-      console.log("YEEEEEEEEEEEEEEES");
       getNewToken(data);
       
     } 
