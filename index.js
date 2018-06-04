@@ -1,16 +1,16 @@
 var express = require('express');
 var fs = require('fs');
-var app = express();
 var bodyParser = require('body-parser');
 var ejs = require('ejs');
 var readline = require('readline');
 var google = require('googleapis');
 var googleAuth = require('google-auth-library');
-var sheets = google.sheets('v4');
 var json = require('express-json');
 
-var data = fs.readFileSync('./credentials.json');
 
+var app = express();
+var sheets = google.sheets('v4');
+var data = fs.readFileSync('./credentials.json');
 var SCOPES = ['https://www.googleapis.com/auth/spreadsheets']; 
 var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
     process.env.USERPROFILE) + '/.credentials/';
@@ -20,57 +20,41 @@ var TOKEN_PATH = TOKEN_DIR + 'appsactivity-nodejs-quickstart.json';
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(__dirname + '/views'));
+
 app.set("view engine", "ejs");
 
 
 app.get("/", function(request, response){
-     fs.readFile(TOKEN_PATH, function(err) {
-    
+  fs.readFile(TOKEN_PATH, function(err) {
     if (err) {
-      getNewToken(data);
-      
+      getNewToken(data); 
     } 
-  });
-    response.render("index");
-});
+    });
+  response.render("index");});
 
 app.post('/result', function(req, res) {
     
-
- 	 response = {
-            first_name : req.body.first_name,
-            last_name : req.body.last_name,
-            telephone : req.body.telephoneNumber,
-            email : req.body.email,
-            };
-        
-    
-    
-    var values = [[response.first_name, response.last_name, response.telephone, response.email]];
+ 	response = {
+    first_name : req.body.first_name,
+    last_name : req.body.last_name,
+    telephone : req.body.telephoneNumber,
+    email : req.body.email,
+  };
+  
+  var values = [[response.first_name, response.last_name, response.telephone, response.email]];
 
 	appendValues(data,values);
 
 
-    res.redirect('/');
-});
-
-
-
+    res.redirect('/');});
 
 app.listen(3000, function () {
   console.log('Застосунок прослуховує 3000-ий порт!');
 });
 
-
 app.get('/view', function(req, res) {
     
-
-	getValues(data,res);
-	
-
-
-
-});
+	getValues(data,res);	});
 
 
 
@@ -91,11 +75,8 @@ function appendValues(data,values) {
       if(err) {
         // Handle error
         console.log(err);
-      } else {
-        console.log('%d cells updated.', result.updatedCells);
       }
-    });
-}
+    });}
 function getValues(data,res) {
 
 	var auth = authorize(data);
@@ -115,13 +96,7 @@ function getValues(data,res) {
     i : 1
   });
  	
-  });
-;}
-	
- 
-  
-
-
+  });}
 function authorize(credentials) {
 	credentials = JSON.parse(data);
 
@@ -134,9 +109,7 @@ function authorize(credentials) {
     oauth2Client.credentials = JSON.parse(token);
     var authClient = oauth2Client;
 
-    return authClient;
-}
-
+    return authClient;}
 function getNewToken(credentials) {
   credentials = JSON.parse(data);
   const {client_secret, client_id, redirect_uris} = credentials.installed;
@@ -162,9 +135,7 @@ function getNewToken(credentials) {
       oauth2Client.credentials = token;
       storeToken(token);
     });
-  });
-}
-
+  });}
 function storeToken(token) {
   try {
     fs.mkdirSync(TOKEN_DIR);
@@ -174,7 +145,6 @@ function storeToken(token) {
     }
   }
   fs.writeFile(TOKEN_PATH, JSON.stringify(token), () => {console.log("callback success")});
-  console.log('Token stored to ' + TOKEN_PATH);
-}
+  console.log('Token stored to ' + TOKEN_PATH);}
 
 
