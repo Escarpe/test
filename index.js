@@ -9,13 +9,12 @@ var googleAuth = require('google-auth-library');
 var sheets = google.sheets('v4');
 var json = require('express-json');
 
-var data = fs.readFileSync('./credentials.json')
+var data = fs.readFileSync('./credentials.json');
 
 var SCOPES = ['https://www.googleapis.com/auth/spreadsheets']; 
 var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
     process.env.USERPROFILE) + '/.credentials/';
 var TOKEN_PATH = TOKEN_DIR + 'appsactivity-nodejs-quickstart.json';
-
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -25,7 +24,14 @@ app.set("view engine", "ejs");
 
 
 app.get("/", function(request, response){
-     
+     fs.readFile(TOKEN_PATH, function(err) {
+    
+    if (err) {
+      console.log("YEEEEEEEEEEEEEEES");
+      getNewToken(data);
+      
+    } 
+  });
     response.render("index");
 });
 
@@ -62,6 +68,7 @@ app.get('/view', function(req, res) {
 
 	getValues(data,res);
 	
+
 
 
 });
@@ -129,6 +136,46 @@ function authorize(credentials) {
     var authClient = oauth2Client;
 
     return authClient;
+}
+
+function getNewToken(credentials) {
+  credentials = JSON.parse(data);
+  const {client_secret, client_id, redirect_uris} = credentials.installed;
+    const oauth2Client = new google.auth.OAuth2(
+        client_id, client_secret, redirect_uris[0]);
+
+  var authUrl = oauth2Client.generateAuthUrl({
+    access_type: 'offline',
+    scope: SCOPES
+  });
+  console.log('Authorize this app by visiting this url: ', authUrl);
+  var rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+  rl.question('Enter the code from that page here: ', function(code) {
+    rl.close();
+    oauth2Client.getToken(code, function(err, token) {
+      if (err) {
+        console.log('Error while trying to retrieve access token', err);
+        return;
+      }
+      oauth2Client.credentials = token;
+      storeToken(token);
+    });
+  });
+}
+
+function storeToken(token) {
+  try {
+    fs.mkdirSync(TOKEN_DIR);
+  } catch (err) {
+    if (err.code != 'EEXIST') {
+      throw err;
+    }
+  }
+  fs.writeFile(TOKEN_PATH, JSON.stringify(token), () => {console.log("callback success")});
+  console.log('Token stored to ' + TOKEN_PATH);
 }
 
 
