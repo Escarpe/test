@@ -49,15 +49,18 @@ app.post('/result', function(req, res) {
 	appendValues(data,values);
 
 
-    res.redirect('/');});
+    res.redirect('/');
+});
+
+app.get('/view', function(req, res) {
+  getValues(data,res);  
+});
 
 app.listen(3000, function () {
   console.log('Застосунок прослуховує 3000-ий порт!');
 });
 
-app.get('/view', function(req, res) {
-    
-	getValues(data,res);	});
+
 
 function appendValues(data,values) {
  
