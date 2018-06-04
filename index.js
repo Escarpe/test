@@ -28,9 +28,12 @@ app.get("/", function(request, response){
   fs.readFile(TOKEN_PATH, function(err) {
     if (err) {
       getNewToken(data); 
-    } 
+      response.send("Token is missing, see console log");
+    } else{
+      response.render("index");
+    }
     });
-  response.render("index");});
+  ;});
 
 app.post('/result', function(req, res) {
     
