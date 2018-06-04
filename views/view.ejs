@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>View data</title>
+<link rel='stylesheet' href='/css/style.css'  type='text/css'>
+</head>
+
+	<body  background="background.jpg">
+	<div class="parent">
+		<div class="blockview" align="center">	
+			<% while (true){%>
+				<%if (!(values[n])){%>
+					<%break%>
+				<%}else{%>						
+					<%n++;%>
+				<%}%>
+			<%}%>
+
+			<table style="width:50%" align="center" cellspacing="17"	>
+				<tr align="center">
+					<th><i><h3>Firstname</th>
+					<th><i><h3>Lastname</th> 
+					<th><i><h3>Telephone</th>
+					<th><i><h3>Email</th>
+
+
+				</tr>
+				<tr><td align="center" colspan="4" ><hr></td></tr>
+
+				<% for (i = 0; i<=n-1; i++){%>
+				    <tr align="center">
+				     	<td><%= values[i][0] %></td>
+				        <td><%= values[i][1] %></td> 
+				        <td><%= values[i][2] %></td>
+				        <td><%= values[i][3] %></td>
+
+				    </tr>
+			    <%}%>
+			</table>
+		</div>
+	</div>
+
+
+</body>
+
+</html>		

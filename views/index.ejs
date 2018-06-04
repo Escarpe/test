@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Upload data</title>
+		<link rel='stylesheet' href='/css/style.css'  type='text/css'>
+	</head>
+
+	<body  background="background.jpg">
+		<div class="parent">
+			<div class="block" align="center">
+
+				<form action="/view" method = "GET" >
+					<table cellspacing="17" class="show">
+						 	<tr>
+						 		<td colspan="2" align="center" ><button class="button" type="submit">SHOW</button></td>
+						  	</tr>
+						</table>
+				</form>
+				<form action="/result" method = "POST" >
+					<div id="table">
+						<table cellspacing="17" class="forms">
+							<tr  >
+								<td> Name:</td> 
+								<td class="input"><input  type="text" name="first_name" placeholder="Name" required /></td>
+							</tr>
+							<tr>
+						 		<td>Second name:</td>
+						 		<td class="input"><input type="text" name="last_name" placeholder="Second name"required /></td>
+						 	</tr>
+						 	<tr>
+								<td> Telephone number: </td>
+								<td class="input"><input type="text" name="telephoneNumber" placeholder="+380*********" required/></td>
+							</tr>
+							<tr>
+						 		<td>Email:</td> 
+						 		<td class="input"><input type="email" name="email" placeholder="Email"required /></td>
+						 	</tr>
+						 	<tr >
+
+						 		<td align="center" colspan="2" ><button class="button" type="submit">SEND</button></td>
+						  	</tr>
+						</table>
+					</div>
+				</form>
+			</div>
+		</div>
+	</body>
+
+</html>
